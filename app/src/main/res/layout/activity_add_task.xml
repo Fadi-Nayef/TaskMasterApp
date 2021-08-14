@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".AddTaskActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat"
+        app:title="Add Task"
+        tools:ignore="MissingConstraints" />
+
     <TextView
         android:id="@+id/add_task_view"
         android:layout_width="wrap_content"
@@ -38,7 +49,6 @@
         android:layout_width="405dp"
         android:layout_height="65dp"
         android:hint="@string/add_your_text"
-        android:hintTextColor="#546E7A"
         android:onClick="txtHandler"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

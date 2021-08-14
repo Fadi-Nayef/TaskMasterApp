@@ -13,7 +13,6 @@ public class AddTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
     }
     public void txtHandler(View view){
-        Snackbar.make(view,"Submitted!",Snackbar.LENGTH_LONG)
-                .setAction("Action",null).show();
+        Snackbar.make(view,"Submitted!",Snackbar.LENGTH_LONG).show();
     }
 }
