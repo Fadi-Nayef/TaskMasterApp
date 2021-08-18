@@ -1,6 +1,6 @@
 package com.example.taskmasterapp;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -14,4 +14,5 @@ public class TaskDetail extends AppCompatActivity {
         TextView title = findViewById(R.id.title_TaskPage);
         title.setText(taskTitle);
     }
+
 }

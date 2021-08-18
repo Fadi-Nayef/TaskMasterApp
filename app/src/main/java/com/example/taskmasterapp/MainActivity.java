@@ -3,8 +3,8 @@ package com.example.taskmasterapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,45 +29,40 @@ public class MainActivity extends AppCompatActivity {
         Intent intent=new Intent(this,AllTasksActivity.class);
         startActivity(intent);
     }
-    public View.OnClickListener firstTaskDetail = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Button firstTaskbtn= findViewById(R.id.btnfirstTask);
-            String taskTitle = firstTaskbtn.getText().toString();
-            Intent intent = new Intent(MainActivity.this,TaskDetail.class);
-            intent.putExtra(TITLE,taskTitle);
-            startActivity(intent);
-        }
-    };
-    public View.OnClickListener secondTaskDetail = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+    public void firstTask(View view){
+        Button firstTaskbtn= findViewById(R.id.btnfirstTask);
+        String taskTitle = firstTaskbtn.getText().toString();
+        Intent intent = new Intent(MainActivity.this,TaskDetail.class);
+        intent.putExtra(TITLE,taskTitle);
+        startActivity(intent);
+    }
+
+
+        public void secondTaskDetail(View v) {
             Button secondTaskBtn = findViewById(R.id.btnSecondTask);
            String taskTitle = secondTaskBtn.getText().toString();
             Intent intent = new Intent(getApplicationContext(),TaskDetail.class);
             intent.putExtra(TITLE,taskTitle);
             startActivity(intent);
         }
-    };
-    public View.OnClickListener thirdTaskDetail = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+
+
+        public void toThirdTask(View v) {
             Button thirdTaskBtn = findViewById(R.id.btnThirdTask);
             String taskTitle = thirdTaskBtn.getText().toString();
             Intent intent = new Intent(getApplicationContext(),TaskDetail.class);
             intent.putExtra(TITLE,taskTitle);
             startActivity(intent);
         }
-    };
-    public View.OnClickListener toSettingsBtn = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+
+
+        public void toSettings(View v) {
             FloatingActionButton toSettingsBtn = findViewById(R.id.settings);
             Intent intent = new Intent(MainActivity.this,Settings.class);
             startActivity(intent);
 
         }
-    };
+
 
 
     @Override
