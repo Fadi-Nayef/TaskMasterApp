@@ -6,12 +6,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AllTasksActivity extends AppCompatActivity {
+    public static final String TASK_TITLE = "taskTitle";
+    public static final String TASK_BODY = "taskBody";
+    public static final String TASK_STATUS = "taskStatus";
     private List<TaskItem> taskItemList;
     private TasksDao tasksDao;
     private AppDB db;
@@ -29,6 +33,17 @@ db= Room.databaseBuilder(getApplicationContext(),AppDB.class,AddTaskActivity.TAS
     taskItemList=tasksDao.findAll();
 //        initData();
         initRecycler();
+   adapter=new ViewAdapter(taskItemList, new ViewAdapter.OnTaskClickedListener() {
+       @Override
+       public void onItemClicked(int position) {
+           Intent intent = new Intent(getApplicationContext(),TaskDetail.class);
+      intent.putExtra(TASK_TITLE,taskItemList.get(position).getTaskTitle());
+      intent.putExtra(TASK_BODY,taskItemList.get(position).getTaskBody());
+      intent.putExtra(TASK_STATUS,taskItemList.get(position).getTaskStatus());
+      startActivity(intent);
+       }
+
+   });
     }
 
     private void initData() {

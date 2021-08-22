@@ -34,8 +34,8 @@
     <string name="add_title">Add Title</string>
     <string name="add_description">Add Description</string>
     <string name="add_status">Add Status</string>
-
-
+    <string name="status" >In Progress </string>
+    <string name="hardStatus">Status :</string>
 
 
 </resources>

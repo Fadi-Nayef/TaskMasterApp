@@ -23,7 +23,6 @@ private AppDB db;
         db = Room.databaseBuilder(getApplicationContext(),AppDB.class,TASK_COLLECTION).allowMainThreadQueries().build();
         tasksDao=db.tasksDao();
 
-
         findViewById(R.id.submit).setOnClickListener((v)->{
             EditText title=findViewById(R.id.task_title);
             String titleTxt=title.getText().toString();

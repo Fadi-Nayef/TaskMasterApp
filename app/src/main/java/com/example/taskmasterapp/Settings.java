@@ -20,9 +20,9 @@ public void  onSubmit(View v ) {
     EditText userName = findViewById(R.id.UserName);
 
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-    SharedPreferences.Editor prefrenceEditor = sharedPreferences.edit();
-    prefrenceEditor.putString("UserName", userName.getText().toString());
-    prefrenceEditor.apply();
+    SharedPreferences.Editor preferenceEditor = sharedPreferences.edit();
+    preferenceEditor.putString("UserName", userName.getText().toString());
+    preferenceEditor.apply();
     Toast toast = Toast.makeText(getApplicationContext(), "User Name Updated", Toast.LENGTH_LONG);
     toast.show();
 }
