@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
-        android:text="GO TO SETTINGS ADD YOUR NAME"
+        android:text="@string/my_tasks"
         app:layout_constraintBottom_toTopOf="@+id/add_task"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.071"

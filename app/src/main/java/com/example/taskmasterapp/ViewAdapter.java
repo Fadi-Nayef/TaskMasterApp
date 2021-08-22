@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class ViewAdapter  extends RecyclerView.Adapter <ViewAdapter.ViewHolder>{
-    private final List<Tasks> tasksList;
+    private final List<TaskItem> taskItemList;
 
-    public ViewAdapter(List<Tasks> tasksList) {
-        this.tasksList = tasksList;
+    public ViewAdapter(List<TaskItem> taskItemList) {
+        this.taskItemList = taskItemList;
     }
 
     @NonNull
@@ -26,15 +26,15 @@ return new ViewHolder(view);
 
     @Override
     public void onBindViewHolder(@NonNull ViewAdapter.ViewHolder holder, int position) {
-    String title=tasksList.get(position).getTaskTitle();
-    String body=tasksList.get(position).getTaskBody();
-    String status = tasksList.get(position).getTaskStatus();
+    String title= taskItemList.get(position).getTaskTitle();
+    String body= taskItemList.get(position).getTaskBody();
+    String status = taskItemList.get(position).getTaskStatus();
 holder.setData(title,body,status);
     }
 
     @Override
     public int getItemCount() {
-        return tasksList.size();
+        return taskItemList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{

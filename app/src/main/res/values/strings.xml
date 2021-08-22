@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">TaskMasterApp</string>
-    <string name="my_tasks" >My Tasks</string>
+    <string name="my_tasks" >GO TO SETTINGS ADD YOUR NAME</string>
     <string name="add_task">Add Task</string>
     <string name="add_task_layout">add task</string>
     <string name="all_tasks">All Tasks</string>
@@ -30,4 +30,12 @@
     <string name="task_title">Task Title</string>
     <string name="task_status">Task Status</string>
     <string name="divider">ـــــــــــــــــــــــــــــــــــــــــــــ</string>
+    <string name="total">total</string>
+    <string name="add_title">Add Title</string>
+    <string name="add_description">Add Description</string>
+    <string name="add_status">Add Status</string>
+
+
+
+
 </resources>
