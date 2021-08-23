@@ -23,14 +23,20 @@ public class MainActivity extends AppCompatActivity {
     public static final String TITLE = "title";
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        TextView userTask = findViewById(R.id.my_task);
+        userTask.setText(sharedPreferences.getString("UserName", "Tasks"));
+        TextView teamName=findViewById(R.id.team_spinnerview);
+        teamName.setText(sharedPreferences.getString("teamName","Team Name"));
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         amplifyConfig();
-
-
     }
 
     public void addTaskView(View view) {
@@ -51,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     public void secondTaskDetail(View v) {
         Button secondTaskBtn = findViewById(R.id.btnSecondTask);
         String taskTitle = secondTaskBtn.getText().toString();
@@ -59,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(TITLE, taskTitle);
         startActivity(intent);
     }
-
 
     public void toThirdTask(View v) {
         Button thirdTaskBtn = findViewById(R.id.btnThirdTask);
@@ -69,26 +73,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     public void toSettings(View v) {
         FloatingActionButton toSettingsBtn = findViewById(R.id.settings);
         Intent intent = new Intent(MainActivity.this, Settings.class);
         startActivity(intent);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        TextView userTask = findViewById(R.id.my_task);
-        userTask.setText(sharedPreferences.getString("UserName", "Tasks"));
-
     }
     // Hard Coded Task To Api
     void hardCodedToApi(){
         Tasks task = Tasks.builder().title("first title").status("my status").body("description body").build();
-
         Amplify.DataStore.save(task,
                 success -> Log.i("ONMAINCREATE", "Item Saved " + success.item().getTitle()),
                 error -> Log.e("ONMAINCREATE", "failed to save on data store", error)

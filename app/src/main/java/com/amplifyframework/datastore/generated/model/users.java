@@ -16,12 +16,12 @@ import com.amplifyframework.core.model.query.predicate.QueryField;
 
 import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
-/** This is an auto generated class representing the users type in your schema. */
+/** This is an auto generated class representing the Users type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "users")
-public final class users implements Model {
-  public static final QueryField ID = field("users", "id");
-  public static final QueryField NAME = field("users", "name");
+@ModelConfig(pluralName = "Users")
+public final class Users implements Model {
+  public static final QueryField ID = field("Users", "id");
+  public static final QueryField NAME = field("Users", "name");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String name;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
@@ -42,7 +42,7 @@ public final class users implements Model {
       return updatedAt;
   }
   
-  private users(String id, String name) {
+  private Users(String id, String name) {
     this.id = id;
     this.name = name;
   }
@@ -54,7 +54,7 @@ public final class users implements Model {
       } else if(obj == null || getClass() != obj.getClass()) {
         return false;
       } else {
-      users users = (users) obj;
+      Users users = (Users) obj;
       return ObjectsCompat.equals(getId(), users.getId()) &&
               ObjectsCompat.equals(getName(), users.getName()) &&
               ObjectsCompat.equals(getCreatedAt(), users.getCreatedAt()) &&
@@ -76,7 +76,7 @@ public final class users implements Model {
   @Override
    public String toString() {
     return new StringBuilder()
-      .append("users {")
+      .append("Users {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
@@ -98,7 +98,7 @@ public final class users implements Model {
    * @return an instance of this model with only ID populated
    * @throws IllegalArgumentException Checks that ID is in the proper format
    */
-  public static users justId(String id) {
+  public static Users justId(String id) {
     try {
       UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
     } catch (Exception exception) {
@@ -108,7 +108,7 @@ public final class users implements Model {
               "creating a new object, use the standard builder method and leave the ID field blank."
       );
     }
-    return new users(
+    return new Users(
       id,
       null
     );
@@ -124,7 +124,7 @@ public final class users implements Model {
   
 
   public interface BuildStep {
-    users build();
+    Users build();
     BuildStep id(String id) throws IllegalArgumentException;
   }
   
@@ -133,10 +133,10 @@ public final class users implements Model {
     private String id;
     private String name;
     @Override
-     public users build() {
+     public Users build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
         
-        return new users(
+        return new Users(
           id,
           name);
     }

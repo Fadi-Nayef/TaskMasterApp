@@ -36,6 +36,14 @@
     <string name="add_status">Add Status</string>
     <string name="status" >In Progress </string>
     <string name="hardStatus">Status :</string>
+    <string name="team_name">Team Name</string>
+
+
+    <string-array name="team_spinner">
+        <item>Manager</item>
+        <item>Employer</item>
+        <item>Owner</item>
+    </string-array>
 
 
 </resources>

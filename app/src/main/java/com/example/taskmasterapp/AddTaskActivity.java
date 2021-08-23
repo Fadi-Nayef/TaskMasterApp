@@ -22,7 +22,7 @@ public class AddTaskActivity extends AppCompatActivity {
     public static final String TASK_COLLECTION = "task_collection";
     private static final String TAG = "add_task";
     private TasksDao tasksDao;
-private AppDB db;
+    private AppDB db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,12 +46,12 @@ private AppDB db;
 
                 // Save Data to API
             Tasks task = Tasks.builder().title(titleTxt).body(bodyTxt).status(statusTxt).build();
-if (isNetworkAvailable(getApplicationContext())){
-    Log.i(TAG,"On Submit :Connected To Network ");
-}else {
-    Log.i(TAG,"On submit : No Internet Connection");
-}
-saveTaskToAPI(task);
+    if (isNetworkAvailable(getApplicationContext())){
+            Log.i(TAG,"On Submit :Connected To Network ");
+    }else {
+            Log.i(TAG,"On submit : No Internet Connection");
+            }
+    saveTaskToAPI(task);
             @SuppressLint("ShowToast") Toast toast=Toast.makeText(this,"Submitted",Toast.LENGTH_LONG);
 
 //            Intent intent=new Intent(this,AllTasksActivity.class);
