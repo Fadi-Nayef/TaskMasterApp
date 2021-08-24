@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-
     void amplifyConfig(){
         /* initialize Amplify Configurations */
         try {
