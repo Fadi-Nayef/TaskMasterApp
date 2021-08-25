@@ -42,7 +42,7 @@
         tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/save_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="36dp"
@@ -50,7 +50,6 @@
         android:clickable="true"
         android:contentDescription="@string/save"
         android:focusable="true"
-        android:onClick="onSubmit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_save"
@@ -60,15 +59,16 @@
         android:id="@+id/team_name"
         android:layout_width="109dp"
         android:layout_height="37dp"
-        android:layout_marginTop="412dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="400dp"
         android:text="You Are "
         android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="92dp" />
+        tools:ignore="MissingConstraints" />
 
     <Spinner
-        android:id="@+id/team_spinner"
+        android:id="@+id/settings_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -76,13 +76,11 @@
         android:minHeight="48dp"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toEndOf="@+id/team_name"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/Home"
+        android:id="@+id/home_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"

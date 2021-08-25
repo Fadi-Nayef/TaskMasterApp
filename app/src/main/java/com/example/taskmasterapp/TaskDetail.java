@@ -16,7 +16,7 @@ public class TaskDetail extends AppCompatActivity {
         String taskTitle = intent.getStringExtra(AllTasksActivity.TASK_TITLE);
          String taskDesc = intent.getStringExtra(AllTasksActivity.TASK_BODY);
                 String taskStatus=intent.getStringExtra(AllTasksActivity.TASK_STATUS);
-        TextView title = findViewById(R.id.title_TaskPage);
+        TextView title = findViewById(R.id.task_title);
         TextView desc= findViewById(R.id.taskDes);
         TextView status = findViewById(R.id.statusView);
         title.setText(taskTitle);

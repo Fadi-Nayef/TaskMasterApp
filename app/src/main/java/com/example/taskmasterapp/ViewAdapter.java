@@ -1,5 +1,6 @@
 package com.example.taskmasterapp;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amplifyframework.datastore.generated.model.Tasks;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewAdapter  extends RecyclerView.Adapter <ViewAdapter.ViewHolder>{
-    private final List<TaskItem> taskItemList;
+    private  List<TaskItem> taskItemList;
     private OnTaskClickedListener listener;
 
     public ViewAdapter(List<TaskItem> taskItemList, OnTaskClickedListener listener) {
@@ -29,7 +33,7 @@ public class ViewAdapter  extends RecyclerView.Adapter <ViewAdapter.ViewHolder>{
 
     @NonNull
     @Override
-    public ViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
   View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.task_items,parent,false);
 return new ViewHolder(view,listener);
     }

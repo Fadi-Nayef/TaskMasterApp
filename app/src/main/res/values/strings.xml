@@ -37,9 +37,10 @@
     <string name="status" >In Progress </string>
     <string name="hardStatus">Status :</string>
     <string name="team_name">Team Name</string>
+    <string name="team_view">Team</string>
 
 
-    <string-array name="team_spinner">
+    <string-array name="team_spinner_array">
         <item>Manager</item>
         <item>Employer</item>
         <item>Owner</item>

@@ -18,7 +18,7 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/title_TaskPage"
+        android:id="@+id/task_title"
         android:layout_width="101dp"
         android:layout_height="42dp"
         android:layout_marginTop="152dp"
@@ -37,7 +37,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_TaskPage" />
+        app:layout_constraintTop_toBottomOf="@+id/task_title" />
 
     <TextView
         android:id="@+id/statusWord"

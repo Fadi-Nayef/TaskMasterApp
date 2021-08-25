@@ -15,21 +15,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    TextView taskView = findViewById(R.id.task_title);
     public static final String TITLE = "title";
 
     @Override
     protected void onResume() {
         super.onResume();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        TextView userTask = findViewById(R.id.my_task);
-        userTask.setText(sharedPreferences.getString("UserName", "Tasks"));
-        TextView teamName=findViewById(R.id.team_spinnerview);
-        teamName.setText(sharedPreferences.getString("teamName","Team Name"));
+        TextView userName= findViewById(R.id.User_Name);
+        userName.setText(sharedPreferences.getString("UserName", "Go to Settings To Add your Name"));
+
+         TextView teamName=findViewById(R.id.team_spinnerview);
+//        teamName.setText(sharedPreferences.getString("teamName","Team Name"));
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         amplifyConfig();
+
     }
 
     public void addTaskView(View view) {
@@ -80,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
     }
     // Hard Coded Task To Api
     void hardCodedToApi(){
+        TextView taskView = findViewById(R.id.task_title);
+
         Tasks task = Tasks.builder().title("first title").status("my status").body("description body").build();
         Amplify.DataStore.save(task,
                 success -> Log.i("ONMAINCREATE", "Item Saved " + success.item().getTitle()),
