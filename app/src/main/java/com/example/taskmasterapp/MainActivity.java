@@ -29,16 +29,35 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         TextView userName= findViewById(R.id.User_Name);
         userName.setText(sharedPreferences.getString("UserName", "Go to Settings To Add your Name"));
+        TextView accountUser = findViewById(R.id.account);
+        accountUser.setText(sharedPreferences.getString("userName","userName"));
+        TextView teamName=findViewById(R.id.team_spinnerview);
 
-         TextView teamName=findViewById(R.id.team_spinnerview);
-//        teamName.setText(sharedPreferences.getString("teamName","Team Name"));
+//       /  /.setText(sharedPreferences.getString("teamName","Team Name"));
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        amplifyConfig();
+        findViewById(R.id.mainsignup).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Amplify.Auth.signOut(
+                        () -> {
+                            Log.i("AuthQuickstart", "Signed out successfully");
+                            Intent intent = new Intent(getBaseContext(), SignInActivity.class);
+                            startActivity(intent);
+
+                        },
+                        error -> {
+                            Log.e("AuthQuickstart", error.toString());
+                        }
+                );
+            }
+        });
+
 
     }
 
