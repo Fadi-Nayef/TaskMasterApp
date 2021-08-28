@@ -1,14 +1,16 @@
 package com.example.taskmasterapp;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.FileUtils;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,8 +20,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.room.Room;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
@@ -27,37 +29,84 @@ import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Tasks;
 import com.amplifyframework.datastore.generated.model.Team;
-import com.google.android.material.snackbar.Snackbar;
 
-import java.lang.reflect.Array;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class AddTaskActivity extends AppCompatActivity {
     public static final String TASK_COLLECTION = "task_collection";
     private static final String TAG = "add_task";
+    private static final int REQUEST_FOR_FILE = 999;
     private TasksDao tasksDao;
     private AppDB db;
     private String selectedTeam;
     private List<Team> teams;
+    private String fileUploaded;
+    private String fileName;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+
+
 //        db = Room.databaseBuilder(getApplicationContext(),AppDB.class,TASK_COLLECTION).allowMainThreadQueries().build();
 //        tasksDao=db.tasksDao();
-     Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
+        Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull Message msg) {
-                Toast toast = Toast.makeText(AddTaskActivity.this , "Task has been added" , Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(AddTaskActivity.this, "Task has been added", Toast.LENGTH_LONG);
                 toast.show();
                 return false;
             }
-        }) ;
+        });
+
+        findViewById(R.id.upload).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                uploadFileToS3();
+                getFileFromDevice();
+            }
+        });
+    }
+        @RequiresApi(api = Build.VERSION_CODES.Q)
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == REQUEST_FOR_FILE && resultCode == RESULT_OK) {
+                Log.i(TAG, "onActivityResult: returned from file explorer");
+                Log.i(TAG, "onActivityResult: => " + data.getData());
+
+                File uploadFile = new File(getApplicationContext().getFilesDir(), "uploadFile");
+                 fileUploaded = new Date().toString();
+                try {
+                    InputStream inputStream = getContentResolver().openInputStream(data.getData());
+                    FileUtils.copy(inputStream, new FileOutputStream(uploadFile));
+                } catch (Exception exception) {
+                    Log.e(TAG, "onActivityResult: file upload failed" + exception.toString());
+                }
+
+                Amplify.Storage.uploadFile(
+                        fileUploaded ,
+                        uploadFile,
+                        success -> {
+                            Log.i(TAG, "uploadFileToS3: succeeded " + success.getKey());
+                        },
+                        error -> {
+                            Log.e(TAG, "uploadFileToS3: failed " + error.toString());
+                        }
+                );
+
+        }
+
 
         Spinner teamSpinner = findViewById(R.id.add_task_spinner);
         String [] teamsGroup = getResources().getStringArray(R.array.team_spinner_array);
@@ -93,7 +142,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
         findViewById(R.id.submit).setOnClickListener((v)->{
 
-            EditText title=findViewById(R.id.task_title);
+            EditText title=findViewById(R.id.task_details_title);
             String titleTxt=title.getText().toString();
 
             EditText body=findViewById(R.id.description);
@@ -101,6 +150,16 @@ public class AddTaskActivity extends AppCompatActivity {
 
             EditText status=findViewById(R.id.status);
             String statusTxt=status.getText().toString();
+
+            if(fileUploaded == null){
+                fileName= "";
+            }else{
+                fileName = fileUploaded;
+            }
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor preferenceEditor = preferences.edit();
+            preferenceEditor.putString("FileName", fileName);
+            preferenceEditor.apply();
 
             // Save Data to Room
             TaskItem taskItem=new TaskItem(titleTxt,bodyTxt,statusTxt);
@@ -128,12 +187,14 @@ public class AddTaskActivity extends AppCompatActivity {
         });
     }
 
+
     private void saveTaskToAPI (Tasks task){
         Amplify.API.mutate(ModelMutation.create(task),
                 success -> Log.i(TAG, "Saved item: " + success.getData().getTitle ()),
                 error -> Log.e(TAG, "Unable to Save Item To API/Dynamodb", error)
         );
     }
+
     void saveTeamToApi(String[] teams){
         for (String name : teams){
             Team team = Team.builder().name(name).build();
@@ -155,8 +216,38 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 error -> Log.i(TAG, "failed to getTeamFromApi: Team Name -->" + error)
         );
-        return teams ;
+        return teams ;}
+    private void getFileFromDevice() {
+        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+        chooseFile.setType("*/*");
+        chooseFile = Intent.createChooser(chooseFile, "Choose a File");
+        startActivityForResult(chooseFile, REQUEST_FOR_FILE); // deprecated
     }
+
+
+    private void uploadFileToS3() {
+        File testFile = new File(getApplicationContext().getFilesDir(), "test");
+
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(testFile));
+            bufferedWriter.append("This is a test file to demonstrate S3 functionality");
+            bufferedWriter.close();
+        } catch (Exception exception) {
+            Log.e(TAG, "uploadFileToS3: failed" + exception.toString());
+        }
+
+        Amplify.Storage.uploadFile(
+                "test",
+                testFile,
+                success -> {
+                    Log.i(TAG, "uploadFileToS3: succeeded " + success.getKey());
+                },
+                error -> {
+                    Log.e(TAG, "uploadFileToS3: failed " + error.toString());
+                }
+        );
+    }
+
 
         // Method Tests the network availability
     public boolean isNetworkAvailable(Context context){

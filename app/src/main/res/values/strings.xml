@@ -39,6 +39,9 @@
     <string name="team_name">Team Name</string>
     <string name="team_view">Team</string>
     <string name="account">Account</string>
+    <string name="upload">UPLOAD</string>
+    <string name="task_details_fileBath">File Bath</string>
+    <string name="file_path">File Path</string>
 
 
     <string-array name="team_spinner_array">

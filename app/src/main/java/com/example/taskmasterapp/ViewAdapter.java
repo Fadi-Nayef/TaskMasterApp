@@ -1,18 +1,13 @@
 package com.example.taskmasterapp;
 
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amplifyframework.datastore.generated.model.Tasks;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ViewAdapter  extends RecyclerView.Adapter <ViewAdapter.ViewHolder>{
@@ -59,7 +54,7 @@ holder.setData(title,body,status);
         public ViewHolder(@NonNull View itemView ,OnTaskClickedListener listener) {
             super(itemView);
             taskTitle = itemView.findViewById(R.id.taskTitle);
-            taskbody = itemView.findViewById(R.id.taskDes);
+            taskbody = itemView.findViewById(R.id.task_details_Desc);
             taskstatus = itemView.findViewById(R.id.taskStatus);
 
             itemView.setOnClickListener(new View.OnClickListener() {

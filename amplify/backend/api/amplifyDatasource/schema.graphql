@@ -4,6 +4,7 @@ type Tasks @model {
   body: String
   status: String
   apartOf: Team @connection(name: "teamTasks")
+  file_name : String
 }
 
 type Team @model {
