@@ -88,6 +88,7 @@ public class AllTasksActivity extends AppCompatActivity {
         layoutManager=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
 

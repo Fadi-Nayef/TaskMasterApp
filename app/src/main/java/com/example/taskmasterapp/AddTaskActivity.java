@@ -1,9 +1,13 @@
 package com.example.taskmasterapp;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.FileUtils;
@@ -11,6 +15,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +28,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
@@ -55,6 +62,19 @@ public class AddTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        }
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type   = intent.getType();
+
+        if (type != null)
+            if (type.equals("image/*"))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    sendImage(intent) ;
+                }
 
 
 //        db = Room.databaseBuilder(getApplicationContext(),AppDB.class,TASK_COLLECTION).allowMainThreadQueries().build();
@@ -75,37 +95,37 @@ public class AddTaskActivity extends AppCompatActivity {
                 getFileFromDevice();
             }
         });
-    }
-        @RequiresApi(api = Build.VERSION_CODES.Q)
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-
-            if (requestCode == REQUEST_FOR_FILE && resultCode == RESULT_OK) {
-                Log.i(TAG, "onActivityResult: returned from file explorer");
-                Log.i(TAG, "onActivityResult: => " + data.getData());
-
-                File uploadFile = new File(getApplicationContext().getFilesDir(), "uploadFile");
-                 fileUploaded = new Date().toString();
-                try {
-                    InputStream inputStream = getContentResolver().openInputStream(data.getData());
-                    FileUtils.copy(inputStream, new FileOutputStream(uploadFile));
-                } catch (Exception exception) {
-                    Log.e(TAG, "onActivityResult: file upload failed" + exception.toString());
-                }
-
-                Amplify.Storage.uploadFile(
-                        fileUploaded ,
-                        uploadFile,
-                        success -> {
-                            Log.i(TAG, "uploadFileToS3: succeeded " + success.getKey());
-                        },
-                        error -> {
-                            Log.e(TAG, "uploadFileToS3: failed " + error.toString());
-                        }
-                );
-
-        }
+//    }
+//        @RequiresApi(api = Build.VERSION_CODES.Q)
+//        @Override
+//        protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//            super.onActivityResult(requestCode, resultCode, data);
+//
+//            if (requestCode == REQUEST_FOR_FILE && resultCode == RESULT_OK) {
+//                Log.i(TAG, "onActivityResult: returned from file explorer");
+//                Log.i(TAG, "onActivityResult: => " + data.getData());
+//
+//                File uploadFile = new File(getApplicationContext().getFilesDir(), "uploadFile");
+//                 fileUploaded = new Date().toString();
+//                try {
+//                    InputStream inputStream = getContentResolver().openInputStream(data.getData());
+//                    FileUtils.copy(inputStream, new FileOutputStream(uploadFile));
+//                } catch (Exception exception) {
+//                    Log.e(TAG, "onActivityResult: file upload failed" + exception.toString());
+//                }
+//
+//                Amplify.Storage.uploadFile(
+//                        fileUploaded ,
+//                        uploadFile,
+//                        success -> {
+//                            Log.i(TAG, "uploadFileToS3: succeeded " + success.getKey());
+//                        },
+//                        error -> {
+//                            Log.e(TAG, "uploadFileToS3: failed " + error.toString());
+//                        }
+//                );
+//
+//        }
 
 
         Spinner teamSpinner = findViewById(R.id.add_task_spinner);
@@ -185,6 +205,51 @@ public class AddTaskActivity extends AppCompatActivity {
 //            Intent intent=new Intent(this,AllTasksActivity.class);
 //            startActivity(intent);
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private void sendImage(Intent intent) {
+        Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        String path = getPathFromUri( getApplicationContext(), imageUri) ;
+        Log.i(TAG, "sendImage: path" + path);
+        path = path.replace(" " , "");
+        File uploadFile = new File(path);
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(intent.getData());
+            FileUtils.copy(inputStream , new FileOutputStream(uploadFile));
+
+        } catch(Exception exception){
+            Log.i(TAG, "sendImage: called" + path);
+        }
+
+        uploadExternalFileToS3(uploadFile);
+    }
+
+    private void uploadExternalFileToS3(File uploadFile) {
+        String key =String.format("defaultTask%s.jpg" , new Date().getTime());
+
+        Amplify.Storage.uploadFile(
+                key,
+                uploadFile ,
+                success -> Log.i(TAG, "uploadFileToS3: succeeded " + success.getKey()) ,
+                failure -> Log.e(TAG, "uploadFileToS3: failed " + failure.toString())
+        );
+    }
+
+
+    String getPathFromUri(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
 

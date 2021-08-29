@@ -19,6 +19,7 @@ import com.amplifyframework.datastore.generated.model.Tasks;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import androidx.annotation.NonNull;
@@ -31,8 +32,10 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TITLE = "title";
-    private static PinpointManager pinpointManager;
     private static final String TAG = "MainActivity";
+    private static PinpointManager pinpointManager;
+    private FirebaseAnalytics mFirebaseAnalytics;
+
 
     public static PinpointManager getPinpointManager(final Context applicationContext) {
         if (pinpointManager == null) {
@@ -93,10 +96,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // Initialize PinpointManager
         getPinpointManager(getApplicationContext());
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         findViewById(R.id.mainsignup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Amplify.Auth.signOut(
                         () -> {
                             Log.i("AuthQuickstart", "Signed out successfully");
@@ -108,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
                             Log.e("AuthQuickstart", error.toString());
                         }
                 );
+
+
             }
         });
 
@@ -116,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void addTaskView(View view) {
         Intent intent = new Intent(this, AddTaskActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID,findViewById(R.id.mainsignup).toString());
+//                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+//                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
         startActivity(intent);
     }
 
