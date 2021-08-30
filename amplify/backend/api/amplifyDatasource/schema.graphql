@@ -5,6 +5,9 @@ type Tasks @model {
   status: String
   apartOf: Team @connection(name: "teamTasks")
   file_name : String
+  location : String
+  location_lat: String
+  location_lon :String
 }
 
 type Team @model {

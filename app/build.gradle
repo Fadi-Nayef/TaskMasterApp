@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
 //    apply plugin
     id 'com.google.gms.google-services'
+
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+
 }
 
 android {
@@ -17,6 +20,7 @@ android {
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         targetSdkVersion 30
         minSdkVersion 21
+
     }
 
     buildTypes {
@@ -108,4 +112,9 @@ dependencies {
     // Declare the dependency for the Analytics library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-analytics'
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 }

@@ -27,12 +27,18 @@ public final class Tasks implements Model {
   public static final QueryField STATUS = field("Tasks", "status");
   public static final QueryField APART_OF = field("Tasks", "tasksApartOfId");
   public static final QueryField FILE_NAME = field("Tasks", "file_name");
+  public static final QueryField LOCATION = field("Tasks", "location");
+  public static final QueryField LOCATION_LAT = field("Tasks", "location_lat");
+  public static final QueryField LOCATION_LON = field("Tasks", "location_lon");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String") String title;
   private final @ModelField(targetType="String") String body;
   private final @ModelField(targetType="String") String status;
   private final @ModelField(targetType="Team") @BelongsTo(targetName = "tasksApartOfId", type = Team.class) Team apartOf;
   private final @ModelField(targetType="String") String file_name;
+  private final @ModelField(targetType="String") String location;
+  private final @ModelField(targetType="String") String location_lat;
+  private final @ModelField(targetType="String") String location_lon;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
@@ -59,6 +65,18 @@ public final class Tasks implements Model {
       return file_name;
   }
   
+  public String getLocation() {
+      return location;
+  }
+  
+  public String getLocationLat() {
+      return location_lat;
+  }
+  
+  public String getLocationLon() {
+      return location_lon;
+  }
+  
   public Temporal.DateTime getCreatedAt() {
       return createdAt;
   }
@@ -67,13 +85,16 @@ public final class Tasks implements Model {
       return updatedAt;
   }
   
-  private Tasks(String id, String title, String body, String status, Team apartOf, String file_name) {
+  private Tasks(String id, String title, String body, String status, Team apartOf, String file_name, String location, String location_lat, String location_lon) {
     this.id = id;
     this.title = title;
     this.body = body;
     this.status = status;
     this.apartOf = apartOf;
     this.file_name = file_name;
+    this.location = location;
+    this.location_lat = location_lat;
+    this.location_lon = location_lon;
   }
   
   @Override
@@ -90,6 +111,9 @@ public final class Tasks implements Model {
               ObjectsCompat.equals(getStatus(), tasks.getStatus()) &&
               ObjectsCompat.equals(getApartOf(), tasks.getApartOf()) &&
               ObjectsCompat.equals(getFileName(), tasks.getFileName()) &&
+              ObjectsCompat.equals(getLocation(), tasks.getLocation()) &&
+              ObjectsCompat.equals(getLocationLat(), tasks.getLocationLat()) &&
+              ObjectsCompat.equals(getLocationLon(), tasks.getLocationLon()) &&
               ObjectsCompat.equals(getCreatedAt(), tasks.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), tasks.getUpdatedAt());
       }
@@ -104,6 +128,9 @@ public final class Tasks implements Model {
       .append(getStatus())
       .append(getApartOf())
       .append(getFileName())
+      .append(getLocation())
+      .append(getLocationLat())
+      .append(getLocationLon())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -120,6 +147,9 @@ public final class Tasks implements Model {
       .append("status=" + String.valueOf(getStatus()) + ", ")
       .append("apartOf=" + String.valueOf(getApartOf()) + ", ")
       .append("file_name=" + String.valueOf(getFileName()) + ", ")
+      .append("location=" + String.valueOf(getLocation()) + ", ")
+      .append("location_lat=" + String.valueOf(getLocationLat()) + ", ")
+      .append("location_lon=" + String.valueOf(getLocationLon()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
@@ -155,6 +185,9 @@ public final class Tasks implements Model {
       null,
       null,
       null,
+      null,
+      null,
+      null,
       null
     );
   }
@@ -165,7 +198,10 @@ public final class Tasks implements Model {
       body,
       status,
       apartOf,
-      file_name);
+      file_name,
+      location,
+      location_lat,
+      location_lon);
   }
   public interface BuildStep {
     Tasks build();
@@ -175,6 +211,9 @@ public final class Tasks implements Model {
     BuildStep status(String status);
     BuildStep apartOf(Team apartOf);
     BuildStep fileName(String fileName);
+    BuildStep location(String location);
+    BuildStep locationLat(String locationLat);
+    BuildStep locationLon(String locationLon);
   }
   
 
@@ -185,6 +224,9 @@ public final class Tasks implements Model {
     private String status;
     private Team apartOf;
     private String file_name;
+    private String location;
+    private String location_lat;
+    private String location_lon;
     @Override
      public Tasks build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -195,7 +237,10 @@ public final class Tasks implements Model {
           body,
           status,
           apartOf,
-          file_name);
+          file_name,
+          location,
+          location_lat,
+          location_lon);
     }
     
     @Override
@@ -228,6 +273,24 @@ public final class Tasks implements Model {
         return this;
     }
     
+    @Override
+     public BuildStep location(String location) {
+        this.location = location;
+        return this;
+    }
+    
+    @Override
+     public BuildStep locationLat(String locationLat) {
+        this.location_lat = locationLat;
+        return this;
+    }
+    
+    @Override
+     public BuildStep locationLon(String locationLon) {
+        this.location_lon = locationLon;
+        return this;
+    }
+    
     /** 
      * WARNING: Do not set ID when creating a new object. Leave this blank and one will be auto generated for you.
      * This should only be set when referring to an already existing object.
@@ -251,13 +314,16 @@ public final class Tasks implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String body, String status, Team apartOf, String fileName) {
+    private CopyOfBuilder(String id, String title, String body, String status, Team apartOf, String fileName, String location, String locationLat, String locationLon) {
       super.id(id);
       super.title(title)
         .body(body)
         .status(status)
         .apartOf(apartOf)
-        .fileName(fileName);
+        .fileName(fileName)
+        .location(location)
+        .locationLat(locationLat)
+        .locationLon(locationLon);
     }
     
     @Override
@@ -283,6 +349,21 @@ public final class Tasks implements Model {
     @Override
      public CopyOfBuilder fileName(String fileName) {
       return (CopyOfBuilder) super.fileName(fileName);
+    }
+    
+    @Override
+     public CopyOfBuilder location(String location) {
+      return (CopyOfBuilder) super.location(location);
+    }
+    
+    @Override
+     public CopyOfBuilder locationLat(String locationLat) {
+      return (CopyOfBuilder) super.locationLat(locationLat);
+    }
+    
+    @Override
+     public CopyOfBuilder locationLon(String locationLon) {
+      return (CopyOfBuilder) super.locationLon(locationLon);
     }
   }
   

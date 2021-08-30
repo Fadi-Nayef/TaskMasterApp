@@ -25,13 +25,13 @@ public class TaskDetail extends AppCompatActivity {
         desc.setText(taskDesc);
         status.setText(taskStatus);
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        TextView fileName = findViewById(R.id.file_details);
-
-        fileName.setText(preferences.getString("FileName","File Name"));
-    }
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        TextView fileName = findViewById(R.id.file_details);
+//
+//        fileName.setText(preferences.getString("FileName","File Name"));
+//    }
 }
