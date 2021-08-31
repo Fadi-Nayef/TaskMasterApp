@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         userName.setText(sharedPreferences.getString("UserName", "Go to Settings To Add your Name"));
         TextView accountUser = findViewById(R.id.account);
         accountUser.setText(sharedPreferences.getString("userName","Application User"));
-        TextView teamName=findViewById(R.id.team_spinnerview);
+//        TextView teamName=findViewById(R.id.team_spinnerview);
 
 //        teamName.setText(sharedPreferences.getString("teamName","Manager"));
 

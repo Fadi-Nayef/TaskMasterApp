@@ -48,8 +48,7 @@ public class AllTasksActivity extends AppCompatActivity {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public boolean handleMessage(@NonNull Message msg) {
-                Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
-                return false;
+                return true;
             }
         });
         taskItemList = new ArrayList<>();

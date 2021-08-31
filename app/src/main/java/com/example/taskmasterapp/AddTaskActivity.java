@@ -70,6 +70,7 @@ public class AddTaskActivity extends AppCompatActivity implements OnMapReadyCall
     private List<Team> teams;
     private String fileUploaded;
     private String fileName;
+
     // initializing
     // FusedLocationProviderClient
     // object
@@ -164,7 +165,7 @@ public class AddTaskActivity extends AppCompatActivity implements OnMapReadyCall
 //        saveTeamToApi(teamsGroup);
 
         teams = new ArrayList<>();
-//        getTeamsFromApi();
+        getTeamsFromApi();
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.team_spinner_array,
@@ -220,9 +221,9 @@ public class AddTaskActivity extends AppCompatActivity implements OnMapReadyCall
 //            tasksDao.addTask(taskItem);
     getLastLocation();
                 // Save Data to API
-//            Team team1 = teams.stream().filter(team2 -> team2.getName().equals(selectedTeam)).collect(Collectors.toList()).get(0);
-//            Tasks task = Tasks.builder().title(titleTxt).body(bodyTxt).status(statusTxt).apartOf(team1).build();
-//            saveTaskToAPI(task);
+            Team team1 = teams.stream().filter(team2 -> team2.getName().equals(selectedTeam)).collect(Collectors.toList()).get(0);
+            Tasks task = Tasks.builder().title(titleTxt).body(bodyTxt).status(statusTxt).apartOf(team1).build();
+            saveTaskToAPI(task);
 
             toast.show();
             if (isNetworkAvailable(getApplicationContext())){
@@ -395,6 +396,7 @@ public class AddTaskActivity extends AppCompatActivity implements OnMapReadyCall
                 });
             }
         }};
+
             private boolean checkPermissions() {
                Log.i(TAG,"permission Checking");
                 return ActivityCompat
