@@ -1,0 +1,199 @@
+# this is an auto generated file. This will be overwritten
+mutation CreateTasks(
+  $input: CreateTasksInput!
+  $condition: ModelTasksConditionInput
+) {
+  createTasks(input: $input, condition: $condition) {
+    id
+    title
+    body
+    status
+    apartOf {
+      id
+      name
+      tasks {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    file_name
+    location
+    location_lat
+    location_lon
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateTasks(
+  $input: UpdateTasksInput!
+  $condition: ModelTasksConditionInput
+) {
+  updateTasks(input: $input, condition: $condition) {
+    id
+    title
+    body
+    status
+    apartOf {
+      id
+      name
+      tasks {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    file_name
+    location
+    location_lat
+    location_lon
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteTasks(
+  $input: DeleteTasksInput!
+  $condition: ModelTasksConditionInput
+) {
+  deleteTasks(input: $input, condition: $condition) {
+    id
+    title
+    body
+    status
+    apartOf {
+      id
+      name
+      tasks {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    file_name
+    location
+    location_lat
+    location_lon
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateTeam(
+  $input: CreateTeamInput!
+  $condition: ModelTeamConditionInput
+) {
+  createTeam(input: $input, condition: $condition) {
+    id
+    name
+    tasks {
+      items {
+        id
+        title
+        body
+        status
+        file_name
+        location
+        location_lat
+        location_lon
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateTeam(
+  $input: UpdateTeamInput!
+  $condition: ModelTeamConditionInput
+) {
+  updateTeam(input: $input, condition: $condition) {
+    id
+    name
+    tasks {
+      items {
+        id
+        title
+        body
+        status
+        file_name
+        location
+        location_lat
+        location_lon
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteTeam(
+  $input: DeleteTeamInput!
+  $condition: ModelTeamConditionInput
+) {
+  deleteTeam(input: $input, condition: $condition) {
+    id
+    name
+    tasks {
+      items {
+        id
+        title
+        body
+        status
+        file_name
+        location
+        location_lat
+        location_lon
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
